@@ -17,6 +17,22 @@ public class BookRepositoryImpl implements BookRepository {
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
+    public List<Book> getAll() {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            return entityManager.createQuery(
+                    "SELECT u FROM Book u", Book.class).getResultList();
+        }
+    }
+
+    @Override
+    public Optional<Book> findBookById(Long id) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Book book = entityManager.find(Book.class, id);
+            return Optional.ofNullable(book);
+        }
+    }
+
+    @Override
     public Book createBook(Book book) {
         EntityTransaction transaction = null;
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
@@ -30,22 +46,6 @@ public class BookRepositoryImpl implements BookRepository {
                 transaction.rollback();
             }
             throw e;
-        }
-    }
-
-    @Override
-    public List<Book> findAll() {
-        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            return entityManager.createQuery(
-                    "SELECT u FROM Book u", Book.class).getResultList();
-        }
-    }
-
-    @Override
-    public Optional<Book> findById(Long id) {
-        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            Book book = entityManager.find(Book.class, id);
-            return Optional.ofNullable(book);
         }
     }
 }

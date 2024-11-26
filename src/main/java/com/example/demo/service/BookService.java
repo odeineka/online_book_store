@@ -5,9 +5,10 @@ import com.example.demo.dto.CreateBookRequestDto;
 import java.util.List;
 
 public interface BookService {
+
+    List<BookDto> getAll();
+
+    BookDto findBookById(Long id);
+
     BookDto createBook(CreateBookRequestDto requestDto);
-
-    List<BookDto> findAll();
-
-    BookDto findById(Long id);
 }
