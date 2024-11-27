@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 @Repository
 public class BookRepositoryImpl implements BookRepository {
-
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
