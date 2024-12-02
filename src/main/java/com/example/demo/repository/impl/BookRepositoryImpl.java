@@ -1,11 +1,11 @@
 package com.example.demo.repository.impl;
 
+import com.example.demo.exception.DataProcessingException;
 import com.example.demo.model.Book;
 import com.example.demo.repository.BookRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,8 @@ public class BookRepositoryImpl implements BookRepository {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             return entityManager.createQuery(
                     "SELECT u FROM Book u", Book.class).getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Failed to get books ", e);
         }
     }
 
@@ -29,6 +31,8 @@ public class BookRepositoryImpl implements BookRepository {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             Book book = entityManager.find(Book.class, id);
             return Optional.ofNullable(book);
+        } catch (Exception e) {
+            throw new DataProcessingException("Failed to get book with id " + id, e);
         }
     }
 
@@ -47,7 +51,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new PersistenceException("Failed to persist the book: " + book, e);
+            throw new DataProcessingException("Failed to persist the book: " + book, e);
         } finally {
             if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
