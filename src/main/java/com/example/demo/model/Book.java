@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -17,9 +16,6 @@ import lombok.ToString;
 @Table(name = "books")
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
