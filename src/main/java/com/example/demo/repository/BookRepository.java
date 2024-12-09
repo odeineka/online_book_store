@@ -8,10 +8,4 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-
-    @Query("SELECT b FROM Book b WHERE b.isDeleted = false")
-    List<Book> findAllActive();
-
-    @Query("SELECT b FROM Book b WHERE b.id = :id AND b.isDeleted = false")
-    Optional<Book> findActiveById(@Param("id") Long id);
 }
