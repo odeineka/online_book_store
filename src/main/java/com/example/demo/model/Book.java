@@ -7,25 +7,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
+@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
 @Table(name = "books")
 @Getter
 @Setter
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
     @Column(nullable = false, length = 100)
-    @ToString.Include
     private String title;
     @Column(nullable = false, length = 100)
-    @ToString.Include
     private String author;
     @Column(nullable = false, unique = true, length = 100)
     private String isbn;
@@ -34,4 +33,6 @@ public class Book {
     @Column(length = 1000)
     private String description;
     private String coverImage;
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT")
+    private boolean isDeleted = false;
 }
