@@ -52,7 +52,6 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Book with ID " + id + " not found")
         );
-        book.setDeleted(true);
-        bookRepository.save(book);
+        bookRepository.delete(book);
     }
 }
