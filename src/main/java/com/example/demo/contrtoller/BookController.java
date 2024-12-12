@@ -1,6 +1,7 @@
 package com.example.demo.contrtoller;
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.dto.BookSearchParametersDto;
 import com.example.demo.dto.CreateBookRequestDto;
 import com.example.demo.service.BookService;
 import java.util.List;
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
 
@@ -47,5 +49,13 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void softDeleteBook(@PathVariable Long id) {
         bookService.softDeleteBookById(id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> search(@RequestParam(required = false) String titlePart,
+                                @RequestParam(required = false) String authorPart) {
+        BookSearchParametersDto searchParameters = new BookSearchParametersDto(
+                titlePart, authorPart);
+        return bookService.search(searchParameters);
     }
 }
