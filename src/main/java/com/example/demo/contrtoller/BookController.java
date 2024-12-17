@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
 
@@ -56,9 +56,8 @@ public class BookController {
     public List<BookDto> search(
             @RequestParam(required = false) String[] titleParts,
             @RequestParam(required = false) String[] authorParts,
+            BookSearchParametersDto searchParameters,
             Pageable pageable) {
-        BookSearchParametersDto searchParameters = new BookSearchParametersDto(
-                titleParts, authorParts);
         return bookService.search(searchParameters, pageable);
     }
 }
