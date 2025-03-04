@@ -23,10 +23,11 @@ public class BookServiceImpl implements BookService {
     private final BookSpecificationBuilder bookSpecificationBuilder;
 
     @Override
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookDto> getAll(Pageable pageable) { /*pageable has implemented here,
+     but I implemented it in one of the previous pull requests*/
         return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toDto)
-                .toList();
+                .toList(); /* I will delete these comments after approval  */
     }
 
     @Override
@@ -61,10 +62,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    /*pageable has implemented here,
+     but I implemented it in one of the previous pull requests*/
     public List<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable) {
         Specification<Book> spec = bookSpecificationBuilder.build(searchParameters);
         return bookRepository.findAll(spec, pageable)
                 .map(bookMapper::toDto)
-                .getContent();
+                .getContent(); /* I will delete these comments after approval  */
     }
 }
