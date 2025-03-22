@@ -19,14 +19,15 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponseDto register(UserRegistrationRequestDto request) {
+    public UserResponseDto register(UserRegistrationRequestDto request)
+            throws RegistrationException {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RegistrationException("Email is already in use");
         }
 
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        User savedUser = userRepository.save(user);
-        return userMapper.toDto(savedUser);
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 }
