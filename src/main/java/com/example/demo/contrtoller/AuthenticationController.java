@@ -6,7 +6,6 @@ import com.example.demo.exception.RegistrationException;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,6 @@ public class AuthenticationController {
 
     @Operation(summary = "register users", description = "Get a status about user registration")
     @PostMapping("/registration")
-    @PermitAll
     public UserResponseDto register(@Valid @RequestBody UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
