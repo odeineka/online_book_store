@@ -10,9 +10,11 @@ import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @Table(name = "books")
+@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
 @Filter(name = "deletedBookFilter", condition = "is_deleted = :isDeleted")
 @Getter
 @Setter

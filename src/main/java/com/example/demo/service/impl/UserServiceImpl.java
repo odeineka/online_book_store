@@ -7,11 +7,8 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.service.UserService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +19,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    @PersistenceContext
-    private final EntityManager entityManager;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
@@ -36,10 +31,5 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         return userMapper.toDto(user);
-    }
-
-    public void applySoftDeleteFilter() {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedUserFilter").setParameter("isDeleted", false);
     }
 }
