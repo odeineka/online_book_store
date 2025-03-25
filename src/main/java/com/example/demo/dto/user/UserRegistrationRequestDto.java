@@ -20,6 +20,7 @@ public class UserRegistrationRequestDto {
     private String password;
 
     @NotBlank
+    @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters long")
     private String repeatPassword;
 
     @NotBlank
