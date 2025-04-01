@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,11 +27,14 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/auth/registration", "/swagger-ui/**", "/v3/api-docs/**")
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                antMatcher("/auth/**"),
+                                antMatcher("/swagger-ui/**"),
+                                antMatcher("/v3/api-docs/**"))
                         .permitAll()
-                        .requestMatchers("/books/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .httpBasic(withDefaults())
                 .sessionManagement(session ->
