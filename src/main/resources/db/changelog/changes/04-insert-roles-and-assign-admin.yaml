@@ -1,45 +1,45 @@
 databaseChangeLog:
   - changeSet:
       id: 04-insert-roles-and-assign-admin
-      author: "user"
+      author: user
       changes:
         - insert:
-            tableName: "roles"
+            tableName: roles
             columns:
               - column:
-                  name: "name"
-                  value: "ROLE_ADMIN"
+                  name: name
+                  value: ROLE_ADMIN
         - insert:
-            tableName: "roles"
+            tableName: roles
             columns:
               - column:
-                  name: "name"
-                  value: "ROLE_USER"
+                  name: name
+                  value: ROLE_USER
 
         - insert:
-            tableName: "users"
+            tableName: users
             columns:
               - column:
-                  name: "email"
-                  value: "admin@example.com"
+                  name: email
+                  value: admin@example.com
               - column:
-                  name: "password"
-                  value: "$2a$10$YEg4O98XMSymlqTDreLHpeIQqW4s04Usgv7.hVRfdOLO4tYfZaB9O"
+                  name: password
+                  value: $2a$10$YEg4O98XMSymlqTDreLHpeIQqW4s04Usgv7.hVRfdOLO4tYfZaB9O
               - column:
-                  name: "first_name"
-                  value: "Admin"
+                  name: first_name
+                  value: Admin
               - column:
-                  name: "last_name"
-                  value: "User"
+                  name: last_name
+                  value: User
 
         - insert:
-            tableName: "users_roles"
+            tableName: users_roles
             columns:
               - column:
-                  name: "user_id"
-                  valueComputed: "(SELECT id FROM users WHERE email = 'admin@example.com')"
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE email = 'admin@example.com')
               - column:
-                  name: "role_id"
-                  valueComputed: "(SELECT id FROM roles WHERE name = 'ROLE_ADMIN')"
+                  name: role_id
+                  valueComputed: (SELECT id FROM roles WHERE name = 'ROLE_ADMIN')
 
 
