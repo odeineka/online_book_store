@@ -9,9 +9,9 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
-                    autoIncrement: true
               - column:
                   name: email
                   type: VARCHAR(100)

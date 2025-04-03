@@ -33,6 +33,6 @@ public class Book {
     @Column(length = 1000)
     private String description;
     private String coverImage;
-    @Column(nullable = false, columnDefinition = "BOOLEAN")
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isDeleted = false;
 }
