@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +32,10 @@ public class AuthenticationController {
         return userService.register(request);
     }
 
+    @Operation(summary = "login users", description = "Get a status about user authentication")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDto> login(
+    public UserLoginResponseDto login(
             @RequestBody @Valid UserLoginRequestDto request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        return authenticationService.authenticate(request);
     }
 }
