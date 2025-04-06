@@ -32,7 +32,7 @@ public class AuthenticationController {
         return userService.register(request);
     }
 
-    @Operation(summary = "login users", description = "Get a status about user authentication")
+    @Operation(summary = "login users", description = "Get token for access")
     @PostMapping("/login")
     public UserLoginResponseDto login(
             @RequestBody @Valid UserLoginRequestDto request) {
