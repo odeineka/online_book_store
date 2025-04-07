@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final Authentication authentication = manager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                request.getEmail(), request.getPassword()));
+                                request.email(), request.password()));
         String token = jwtUtil.generateToken(authentication.getName());
         return new UserLoginResponseDto(token);
     }
