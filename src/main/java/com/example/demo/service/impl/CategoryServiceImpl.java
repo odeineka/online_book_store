@@ -7,9 +7,8 @@ import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.model.Category;
 import com.example.demo.repository.category.CategoryRepository;
 import com.example.demo.service.CategoryService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +19,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAll(Pageable pageable) {
+    public Page<CategoryDto> findAll(Pageable pageable) {
         return categoryRepository.findAll(pageable)
-                .stream()
-                .map(categoryMapper::toDto)
-                .collect(Collectors.toList());
+                .map(categoryMapper::toDto);
     }
 
     @Override
     public CategoryDto getById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with"
-                        + "id " + id));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("Category not found with id %d", id)));
         return categoryMapper.toDto(category);
     }
 
@@ -40,8 +37,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.findByName(categoryDto.name())
                 .filter(cat -> !cat.isDeleted())
                 .ifPresent(cat -> {
-                    throw new DataProcessingException("Category with name '"
-                            + categoryDto.name() + "' already exists", null);
+                    String message = String.format("Category with name '%s' already exists",
+                            categoryDto.name());
+                    throw new DataProcessingException(message,
+                            new IllegalStateException("Duplicate category name"));
                 });
         Category category = categoryMapper.toEntity(categoryDto);
         Category savedCategory = categoryRepository.save(category);

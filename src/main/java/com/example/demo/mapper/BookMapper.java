@@ -27,11 +27,7 @@ public interface BookMapper {
     default void mapCategoryIdsToEntities(CreateBookRequestDto dto, @MappingTarget Book book) {
         if (dto.categoryIds() != null) {
             book.setCategories(dto.categoryIds().stream()
-                    .map(id -> {
-                        Category c = new Category();
-                        c.setId(id);
-                        return c;
-                    })
+                    .map(Category::new)
                     .collect(Collectors.toSet()));
         }
     }

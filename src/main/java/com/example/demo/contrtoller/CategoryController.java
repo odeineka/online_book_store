@@ -8,8 +8,8 @@ import com.example.demo.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +45,7 @@ public class CategoryController {
     @Operation(summary = "Get all categories", description = "Paged list of categories")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public List<CategoryDto> getAll(Pageable pageable) {
+    public Page<CategoryDto> getAll(Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
@@ -76,12 +76,10 @@ public class CategoryController {
             description = "Paged list of books in a category")
     @GetMapping("/{id}/books")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public List<BookWithoutCategoryIdsDto> getBooksByCategoryId(
+    public Page<BookWithoutCategoryIdsDto> getBooksByCategoryId(
             @PathVariable Long id,
             Pageable pageable) {
         return bookService.findBooksByCategoryId(id, pageable)
-                .stream()
-                .map(bookMapper::toDtoWithoutCategoryIds)
-                .toList();
+                .map(bookMapper::toDtoWithoutCategoryIds);
     }
 }

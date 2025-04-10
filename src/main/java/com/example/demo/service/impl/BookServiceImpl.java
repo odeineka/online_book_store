@@ -71,6 +71,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<Book> findBooksByCategoryId(Long categoryId, Pageable pageable) {
-        return bookRepository.findAllByCategories_Id(categoryId, pageable);
+        return bookRepository.findAllByCategoryId(categoryId, pageable);
     }
 }

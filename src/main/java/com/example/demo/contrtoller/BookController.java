@@ -3,12 +3,14 @@ package com.example.demo.contrtoller;
 import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.BookSearchParametersDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
+import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,5 +73,12 @@ public class BookController {
             BookSearchParametersDto searchParameters,
             Pageable pageable) {
         return bookService.search(searchParameters, pageable);
+    }
+
+    @Operation(summary = "Get books by category",
+            description = "Get a paginated list of books by category id")
+    @GetMapping("/category/{categoryId}")
+    public Page<Book> getBooksByCategory(@PathVariable Long categoryId, Pageable pageable) {
+        return bookService.findBooksByCategoryId(categoryId, pageable);
     }
 }
