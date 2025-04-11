@@ -37,10 +37,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.findByName(categoryDto.name())
                 .filter(cat -> !cat.isDeleted())
                 .ifPresent(cat -> {
-                    String message = String.format("Category with name '%s' already exists",
-                            categoryDto.name());
-                    throw new DataProcessingException(message,
-                            new IllegalStateException("Duplicate category name"));
+                    throw new DataProcessingException(String.format(
+                            "Category with name '%s' already exists", categoryDto.name()));
                 });
         Category category = categoryMapper.toEntity(categoryDto);
         Category savedCategory = categoryRepository.save(category);
@@ -51,8 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto update(Long id, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id " + id));
-        category.setName(categoryDto.name());
-        category.setDescription(categoryDto.description());
+        categoryMapper.updateCategoryFromDto(categoryDto, category);
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 
