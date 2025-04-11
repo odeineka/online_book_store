@@ -1,7 +1,8 @@
 package com.example.demo.contrtoller;
 
 import com.example.demo.dto.book.BookWithoutCategoryIdsDto;
-import com.example.demo.dto.category.CategoryDto;
+import com.example.demo.dto.category.CategoryResponseDto;
+import com.example.demo.dto.category.CreateCategoryRequestDto;
 import com.example.demo.mapper.BookMapper;
 import com.example.demo.service.BookService;
 import com.example.demo.service.CategoryService;
@@ -38,30 +39,31 @@ public class CategoryController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-        return categoryService.save(categoryDto);
+    public CategoryResponseDto createCategory(@Valid @RequestBody CreateCategoryRequestDto
+                                                          requestDto) {
+        return categoryService.save(requestDto);
     }
 
     @Operation(summary = "Get all categories", description = "Paged list of categories")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public Page<CategoryDto> getAll(Pageable pageable) {
+    public Page<CategoryResponseDto> getAll(Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
     @Operation(summary = "Get a category by ID", description = "Fetch single category")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public CategoryDto getCategoryById(@PathVariable Long id) {
+    public CategoryResponseDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
 
     @Operation(summary = "Update a category", description = "Admin only")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public CategoryDto updateCategory(@PathVariable Long id,
-                                      @Valid @RequestBody CategoryDto categoryDto) {
-        return categoryService.update(id, categoryDto);
+    public CategoryResponseDto updateCategory(
+            @PathVariable Long id, @Valid @RequestBody CreateCategoryRequestDto requestDto) {
+        return categoryService.update(id, requestDto);
     }
 
     @Operation(summary = "Delete a category", description = "Admin only (soft delete)")
