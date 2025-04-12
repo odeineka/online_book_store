@@ -42,7 +42,7 @@ public class Book {
     @JoinTable(
             name = "books_categories",
             joinColumns = @JoinColumn(name = "books_id"),
-            inverseJoinColumns = @JoinColumn(name = "categories_id") // must match liquibase
+            inverseJoinColumns = @JoinColumn(name = "categories_id")
     )
     private Set<Category> categories = new HashSet<>();
     @Column(nullable = false, columnDefinition = "TINYINT")
