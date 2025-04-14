@@ -2,9 +2,11 @@ package com.example.demo.dto.book;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Set;
 
 public record CreateBookRequestDto(
         @NotBlank(message = "Title is mandatory and cannot be blank")
@@ -21,5 +23,5 @@ public record CreateBookRequestDto(
         BigDecimal price,
         @Size(max = 1000, message = "Description must not exceed 1000 characters")
         String description,
-        String coverImage) {
+        String coverImage, @NotEmpty Set<Long> categoryIds) {
 }
