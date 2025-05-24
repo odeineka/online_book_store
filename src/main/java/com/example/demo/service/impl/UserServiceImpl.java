@@ -7,8 +7,10 @@ import com.example.demo.exception.RegistrationException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Role;
 import com.example.demo.model.RoleName;
+import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 import com.example.demo.repository.role.RoleRepository;
+import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.service.UserService;
 import jakarta.transaction.Transactional;
@@ -25,8 +27,10 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ShoppingCartRepository cartRepository;
 
     @Override
+    @Transactional
     public UserResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -37,11 +41,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new EntityNotFoundException("Default role"
-                        + RoleName.ROLE_USER + "not found"));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(
+                        "Default role  %s not found", RoleName.ROLE_USER)));
         user.setRoles(Set.of(userRole));
 
         userRepository.save(user);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.setUser(user);
+        cartRepository.save(cart);
         return userMapper.toDto(user);
     }
 }

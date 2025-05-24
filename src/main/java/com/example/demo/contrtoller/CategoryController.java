@@ -1,6 +1,5 @@
 package com.example.demo.contrtoller;
 
-import com.example.demo.dto.book.BookWithoutCategoryIdsDto;
 import com.example.demo.dto.category.CategoryResponseDto;
 import com.example.demo.dto.category.CreateCategoryRequestDto;
 import com.example.demo.mapper.BookMapper;
@@ -72,16 +71,5 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
-    }
-
-    @Operation(summary = "Get books by category ID",
-            description = "Paged list of books in a category")
-    @GetMapping("/{id}/books")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public Page<BookWithoutCategoryIdsDto> getBooksByCategoryId(
-            @PathVariable Long id,
-            Pageable pageable) {
-        return bookService.findBooksByCategoryId(id, pageable)
-                .map(bookMapper::toDtoWithoutCategoryIds);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.repository.book;
 
 import static com.example.demo.repository.SpecificationProvider.AUTHOR_KEY;
+import static com.example.demo.repository.SpecificationProvider.CATEGORY_KEY;
 import static com.example.demo.repository.SpecificationProvider.TITLE_KEY;
 
 import com.example.demo.dto.book.BookSearchParametersDto;
@@ -27,6 +28,10 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         if (searchParameters.titleParts() != null && searchParameters.titleParts().length > 0) {
             spec = spec.and(bookSpecificationProviderManager.getSpecification(TITLE_KEY)
                     .getSpecification(searchParameters.titleParts()));
+        }
+        if (searchParameters.categoryIds() != null && searchParameters.categoryIds().length > 0) {
+            spec = spec.and(bookSpecificationProviderManager.getSpecification(CATEGORY_KEY)
+                    .getSpecification(searchParameters.categoryIds()));
         }
         return spec;
     }
