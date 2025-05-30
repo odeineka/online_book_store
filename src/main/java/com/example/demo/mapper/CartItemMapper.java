@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class, componentModel = "spring", uses = {BookMapper.class})
 public interface CartItemMapper {
-    @Mapping(target = "book", source = "bookId", qualifiedByName = "bookFromId")
+    @Mapping(target = "book", ignore = true)
     @Mapping(target = "shoppingCart", ignore = true)
     CartItem toEntity(CreateCartItemRequestDto dto);
 

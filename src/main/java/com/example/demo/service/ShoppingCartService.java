@@ -4,6 +4,8 @@ import com.example.demo.dto.cart.CartItemResponseDto;
 import com.example.demo.dto.cart.CreateCartItemRequestDto;
 import com.example.demo.dto.cart.ShoppingCartResponseDto;
 import com.example.demo.dto.cart.UpdateCartItemRequestDto;
+import com.example.demo.model.ShoppingCart;
+import com.example.demo.model.User;
 
 public interface ShoppingCartService {
     ShoppingCartResponseDto getCartForCurrentUser();
@@ -13,4 +15,6 @@ public interface ShoppingCartService {
     CartItemResponseDto updateItem(Long cartItemId, UpdateCartItemRequestDto dto);
 
     void removeItem(Long cartItemId);
+
+    ShoppingCart createCartForUser(User user);
 }

@@ -34,7 +34,6 @@ public class ShoppingCartController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Add a book to shopping cart")
-
     public CartItemResponseDto addItem(
             @Valid @RequestBody CreateCartItemRequestDto dto) {
         return cartService.addItem(dto);

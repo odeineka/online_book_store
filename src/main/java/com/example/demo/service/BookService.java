@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.BookSearchParametersDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
+import com.example.demo.model.Book;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,8 @@ public interface BookService {
     void softDeleteBookById(Long id);
 
     List<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable);
+
+    Page<Book> findBooksByCategoryId(Long categoryId, Pageable pageable);
+
+    Page<BookDto> getBooksByCategory(String categoryName, Pageable pageable);
 }

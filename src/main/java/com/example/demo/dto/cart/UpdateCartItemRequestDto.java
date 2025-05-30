@@ -1,6 +1,6 @@
 package com.example.demo.dto.cart;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
-public record UpdateCartItemRequestDto(@Min(1) int quantity) {
+public record UpdateCartItemRequestDto(@Positive int quantity) {
 }

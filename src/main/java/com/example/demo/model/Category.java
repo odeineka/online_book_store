@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -25,7 +28,10 @@ public class Category {
     private String name;
     private String description;
     @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted = false;
+    private boolean isDeleted;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Book> books = new HashSet<>();
 
     public Category(Long id) {
         this.id = id;

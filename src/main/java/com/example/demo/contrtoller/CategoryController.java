@@ -1,5 +1,6 @@
 package com.example.demo.contrtoller;
 
+import com.example.demo.dto.book.BookWithoutCategoryIdsDto;
 import com.example.demo.dto.category.CategoryResponseDto;
 import com.example.demo.dto.category.CreateCategoryRequestDto;
 import com.example.demo.mapper.BookMapper;
@@ -63,6 +64,17 @@ public class CategoryController {
     public CategoryResponseDto updateCategory(
             @PathVariable Long id, @Valid @RequestBody CreateCategoryRequestDto requestDto) {
         return categoryService.update(id, requestDto);
+    }
+
+    @Operation(summary = "Get books by category ID",
+            description = "Paged list of books in a category")
+    @GetMapping("/{id}/books")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public Page<BookWithoutCategoryIdsDto> getBooksByCategoryId(
+            @PathVariable Long id,
+            Pageable pageable) {
+        return bookService.findBooksByCategoryId(id, pageable)
+                .map(bookMapper::toDtoWithoutCategoryIds);
     }
 
     @Operation(summary = "Delete a category", description = "Admin only (soft delete)")

@@ -7,11 +7,11 @@ import com.example.demo.exception.RegistrationException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Role;
 import com.example.demo.model.RoleName;
-import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 import com.example.demo.repository.role.RoleRepository;
 import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.repository.user.UserRepository;
+import com.example.demo.service.ShoppingCartService;
 import com.example.demo.service.UserService;
 import jakarta.transaction.Transactional;
 import java.util.Set;
@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final ShoppingCartRepository cartRepository;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     @Transactional
@@ -44,12 +45,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(
                         "Default role  %s not found", RoleName.ROLE_USER)));
         user.setRoles(Set.of(userRole));
-
         userRepository.save(user);
-
-        ShoppingCart cart = new ShoppingCart();
-        cart.setUser(user);
-        cartRepository.save(cart);
+        shoppingCartService.createCartForUser(user);
         return userMapper.toDto(user);
     }
 }

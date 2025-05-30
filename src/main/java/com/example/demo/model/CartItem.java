@@ -9,15 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "carts_items")
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE carts_items SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 public class CartItem {
@@ -37,6 +37,5 @@ public class CartItem {
     private int quantity;
 
     @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 }
-

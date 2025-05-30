@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +25,6 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,9 +48,5 @@ public class Book {
     )
     private Set<Category> categories = new HashSet<>();
     @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted = false;
-
-    public Book(Long id) {
-        this.id = id;
-    }
+    private boolean isDeleted;
 }

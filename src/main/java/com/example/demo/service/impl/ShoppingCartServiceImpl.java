@@ -19,10 +19,12 @@ import com.example.demo.service.ShoppingCartService;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -33,38 +35,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartMapper shoppingCartMapper;
     private final CartItemMapper cartItemMapper;
 
-    private User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepo.findByEmail(auth.getName())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
-
-    private ShoppingCart getCurrentUserCart() {
-        return cartRepo.findByUser(getCurrentUser())
-                .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
-    }
-
     @Override
-    @Transactional
     public ShoppingCartResponseDto getCartForCurrentUser() {
         ShoppingCart cart = getCurrentUserCart();
-        System.out.println("Fetched cart items: " + cart.getCartItems().size());
-        System.out.println("First book: " + cart.getCartItems().get(0).getBook());
-        System.out.println("First book title: " + cart.getCartItems().get(0).getBook().getTitle());
         return shoppingCartMapper.toDto(cart);
     }
 
     @Override
-    @Transactional
     public CartItemResponseDto addItem(CreateCartItemRequestDto dto) {
         ShoppingCart cart = getCurrentUserCart();
 
         Book book = bookRepo.findById(dto.bookId())
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
-        Optional<CartItem> existing = cart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(book.getId()))
-                .findFirst();
+        Optional<CartItem> existing = itemRepo.findByShoppingCartAndBook(cart, book);
 
         CartItem item = existing.orElseGet(() -> {
             CartItem newItem = cartItemMapper.toEntity(dto);
@@ -81,7 +65,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    @Transactional
     public CartItemResponseDto updateItem(Long cartItemId, UpdateCartItemRequestDto dto) {
         CartItem item = itemRepo.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found"));
@@ -93,10 +76,32 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    @Transactional
     public void removeItem(Long cartItemId) {
         CartItem item = itemRepo.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found"));
+        User currentUser = getCurrentUser();
+
+        if (!item.getShoppingCart().getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("You are not authorized to delete this cart item.");
+        }
         itemRepo.delete(item);
+    }
+
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepo.findByEmail(auth.getName())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
+    private ShoppingCart getCurrentUserCart() {
+        return cartRepo.findByUser(getCurrentUser())
+                .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+    }
+
+    @Override
+    public ShoppingCart createCartForUser(User user) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.setUser(user);
+        return cartRepo.save(cart);
     }
 }

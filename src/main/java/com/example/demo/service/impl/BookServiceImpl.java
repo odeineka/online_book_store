@@ -65,6 +65,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Page<Book> findBooksByCategoryId(Long categoryId, Pageable pageable) {
+        return bookRepository.findAllByCategoryId(categoryId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BookDto> getBooksByCategory(String categoryName, Pageable pageable) {
+        Page<Book> books = bookRepository.findAllByCategories_Name(categoryName, pageable);
+        return books.map(bookMapper::toDto);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<BookDto> getAll(Pageable pageable) {
         return bookRepository.findAll(pageable)

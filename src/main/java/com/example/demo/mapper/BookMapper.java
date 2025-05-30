@@ -11,7 +11,6 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", config = MapperConfig.class, uses = { CategoryMapper.class })
 public interface BookMapper {
@@ -42,10 +41,5 @@ public interface BookMapper {
                             .collect(Collectors.toSet())
             );
         }
-    }
-
-    @Named("bookFromId")
-    default Book bookFromId(Long id) {
-        return id == null ? null : new Book(id);
     }
 }
