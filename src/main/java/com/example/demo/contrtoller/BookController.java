@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +39,7 @@ public class BookController {
 
     @GetMapping("/category/{categoryName}")
     public Page<BookDto> getBooksByCategory(
-            @PathVariable String categoryName,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @PathVariable String categoryName, Pageable pageable) {
         return bookService.getBooksByCategory(categoryName, pageable);
     }
 

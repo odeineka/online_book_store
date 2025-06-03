@@ -19,7 +19,6 @@ import com.example.demo.service.ShoppingCartService;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -80,17 +79,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         CartItem item = itemRepo.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found"));
         User currentUser = getCurrentUser();
-
-        if (!item.getShoppingCart().getUser().getId().equals(currentUser.getId())) {
-            throw new AccessDeniedException("You are not authorized to delete this cart item.");
-        }
         itemRepo.delete(item);
     }
 
     private User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepo.findByEmail(auth.getName())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return ((CustomUserDetails) auth.getPrincipal()).getUser();
     }
 
     private ShoppingCart getCurrentUserCart() {
