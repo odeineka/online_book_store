@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 08-create-carts-items-table
+      id: 08-create-cart-items-table
       author: yourname
       changes:
         - createTable:
-            tableName: carts_items
+            tableName: cart_items
             columns:
               - column:
                   name: id
@@ -35,14 +35,14 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: carts_items
+            baseTableName: cart_items
             baseColumnNames: shopping_carts_id
             referencedTableName: shopping_carts
             referencedColumnNames: id
-            constraintName: fk_cartsitems_carts
+            constraintName: fk_cartitems_cart
         - addForeignKeyConstraint:
-            baseTableName: carts_items
+            baseTableName: cart_items
             baseColumnNames: books_id
             referencedTableName: books
             referencedColumnNames: id
-            constraintName: fk_cartsitems_books
+            constraintName: fk_cartitems_books

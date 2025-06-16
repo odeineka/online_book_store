@@ -9,7 +9,6 @@ import com.example.demo.model.Role;
 import com.example.demo.model.RoleName;
 import com.example.demo.model.User;
 import com.example.demo.repository.role.RoleRepository;
-import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.service.ShoppingCartService;
 import com.example.demo.service.UserService;
@@ -27,7 +26,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final ShoppingCartRepository cartRepository;
     private final ShoppingCartService shoppingCartService;
 
     @Override
@@ -35,9 +33,9 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RegistrationException("Email is already in use");
+            throw new RegistrationException(String.format(
+                    "Email %s is already in use",request.getEmail()));
         }
-
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 

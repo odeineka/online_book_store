@@ -14,8 +14,6 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @Query("SELECT b FROM Book b JOIN b.categories c WHERE c.id = :categoryId")
     Page<Book> findAllByCategoryId(Long categoryId, Pageable pageable);
 
-    Page<Book> findAllByCategories_Name(String categoryName, Pageable pageable);
-
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Specification<Book> spec, Pageable pageable);
 

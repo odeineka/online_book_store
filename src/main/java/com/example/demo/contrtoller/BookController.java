@@ -37,12 +37,6 @@ public class BookController {
         return bookService.getAll(pageable);
     }
 
-    @GetMapping("/category/{categoryName}")
-    public Page<BookDto> getBooksByCategory(
-            @PathVariable String categoryName, Pageable pageable) {
-        return bookService.getBooksByCategory(categoryName, pageable);
-    }
-
     @Operation(summary = "Get a book by id", description = "Get a book by searched id")
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {

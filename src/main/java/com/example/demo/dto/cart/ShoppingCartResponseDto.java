@@ -1,6 +1,6 @@
 package com.example.demo.dto.cart;
 
-import java.util.List;
+import java.util.Set;
 
-public record ShoppingCartResponseDto(Long id, Long userId, List<CartItemResponseDto> cartItems) {
+public record ShoppingCartResponseDto(Long id, Long userId, Set<CartItemResponseDto> cartItems) {
 }

@@ -23,6 +23,4 @@ public interface BookService {
     List<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable);
 
     Page<Book> findBooksByCategoryId(Long categoryId, Pageable pageable);
-
-    Page<BookDto> getBooksByCategory(String categoryName, Pageable pageable);
 }

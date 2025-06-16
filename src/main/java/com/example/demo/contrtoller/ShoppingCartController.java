@@ -1,6 +1,5 @@
 package com.example.demo.contrtoller;
 
-import com.example.demo.dto.cart.CartItemResponseDto;
 import com.example.demo.dto.cart.CreateCartItemRequestDto;
 import com.example.demo.dto.cart.ShoppingCartResponseDto;
 import com.example.demo.dto.cart.UpdateCartItemRequestDto;
@@ -34,7 +33,7 @@ public class ShoppingCartController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Add a book to shopping cart")
-    public CartItemResponseDto addItem(
+    public ShoppingCartResponseDto addItem(
             @Valid @RequestBody CreateCartItemRequestDto dto) {
         return cartService.addItem(dto);
     }
@@ -42,7 +41,7 @@ public class ShoppingCartController {
     @PutMapping("/items/{cartItemId}")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Update quantity of a cart item")
-    public CartItemResponseDto updateItem(
+    public ShoppingCartResponseDto updateItem(
             @PathVariable Long cartItemId,
             @Valid @RequestBody UpdateCartItemRequestDto dto) {
         return cartService.updateItem(cartItemId, dto);
