@@ -44,9 +44,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Book book = bookRepo.findById(dto.bookId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         String.format("Book with ID %d not found", dto.bookId())));
-        Optional<CartItem> existing = cart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(book.getId()))
-                .findFirst();
+        Optional<CartItem> existing = itemRepo.findByShoppingCartAndBook(cart, book);
         CartItem item = existing.orElseGet(() -> {
             CartItem newItem = cartItemMapper.toEntity(dto);
             newItem.setShoppingCart(cart);
