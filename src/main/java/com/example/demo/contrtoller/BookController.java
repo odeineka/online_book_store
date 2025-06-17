@@ -3,7 +3,6 @@ package com.example.demo.contrtoller;
 import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.BookSearchParametersDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
-import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,9 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private final BookService bookService;
 
-    @Operation(summary = "Get all books", description = "Get a list of all available books")
+    @Operation(summary = "Get all books",
+            description = "Get a paginated list of all available books")
     @GetMapping
-    public List<BookDto> getAll(Pageable pageable) {
+    public Page<BookDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
     }
 
@@ -73,12 +73,5 @@ public class BookController {
             BookSearchParametersDto searchParameters,
             Pageable pageable) {
         return bookService.search(searchParameters, pageable);
-    }
-
-    @Operation(summary = "Get books by category",
-            description = "Get a paginated list of books by category id")
-    @GetMapping("/category/{categoryId}")
-    public Page<Book> getBooksByCategory(@PathVariable Long categoryId, Pageable pageable) {
-        return bookService.findBooksByCategoryId(categoryId, pageable);
     }
 }

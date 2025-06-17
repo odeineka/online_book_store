@@ -23,5 +23,7 @@ public record CreateBookRequestDto(
         BigDecimal price,
         @Size(max = 1000, message = "Description must not exceed 1000 characters")
         String description,
-        String coverImage, @NotEmpty Set<Long> categoryIds) {
+        String coverImage,
+        @NotEmpty
+        Set<Long> categoryIds) {
 }

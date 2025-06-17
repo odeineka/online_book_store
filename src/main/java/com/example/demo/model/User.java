@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Column(length = 1000)
     private String shippingAddress;
     @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     @ManyToMany
     @JoinTable(

@@ -66,14 +66,6 @@ public class CategoryController {
         return categoryService.update(id, requestDto);
     }
 
-    @Operation(summary = "Delete a category", description = "Admin only (soft delete)")
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Long id) {
-        categoryService.deleteById(id);
-    }
-
     @Operation(summary = "Get books by category ID",
             description = "Paged list of books in a category")
     @GetMapping("/{id}/books")
@@ -83,5 +75,13 @@ public class CategoryController {
             Pageable pageable) {
         return bookService.findBooksByCategoryId(id, pageable)
                 .map(bookMapper::toDtoWithoutCategoryIds);
+    }
+
+    @Operation(summary = "Delete a category", description = "Admin only (soft delete)")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Long id) {
+        categoryService.deleteById(id);
     }
 }

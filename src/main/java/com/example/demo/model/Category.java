@@ -25,7 +25,7 @@ public class Category {
     private String name;
     private String description;
     @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     public Category(Long id) {
         this.id = id;
